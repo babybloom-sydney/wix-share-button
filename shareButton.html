@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Share Button</title>
+  <style>
+    body { margin:0; display:flex; justify-content:center; align-items:center; height:100%; }
+    #Share-Profile {
+      padding:10px 16px; border-radius:8px; background:#007bff; color:white; border:none;
+      font-size:16px; cursor:pointer;
+    }
+    #Share-Profile:hover { background:#0056b3; }
+  </style>
+</head>
+<body>
+  <button id="Share-Profile">Share Profile</button>
+
+  <script>
+    let shareUrl = "https://babybloomsydney.com.au"; // default
+
+    // Listen for postMessage from parent
+    window.addEventListener("message", (e) => {
+      if (e.data && e.data.url) {
+        shareUrl = e.data.url;
+      }
+    });
+
+    document.getElementById("Share-Profile").addEventListener("click", () => {
+      if (navigator.share) {
+        navigator.share({
+          title: "Check out this profile",
+          text: "Take a look at this!",
+          url: shareUrl
+        }).catch(err => console.error("Share failed", err));
+      } else {
+        alert("Sharing is not supported on this device.");
+      }
+    });
+  </script>
+</body>
+</html>
